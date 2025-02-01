@@ -249,5 +249,8 @@ Battery-Operated, Low-Power Mode:
 
 For remote or off-grid installations, integrate a battery-powered solution with low-power sensors and a low-power mode for the microcontroller, enabling the system to run for extended periods without constant power supply.
 Use solar panels or other renewable energy sources to power the system in environmentally-conscious or remote locations.
+
+
+
 CONCLUSION 
 The **Air Quality Monitoring System** using the **VSD Squadron Mini (CH32V003)** RISC-V microcontroller provides an effective and efficient solution for ensuring safe environmental conditions in food production and storage facilities. By continuously monitoring gas concentrations, temperature, and humidity through sensors like the **MQ-135** and **DHT11/DHT22**, the system provides real-time data and automates corrective actions such as activating ventilation systems or triggering alarms. Cloud integration via the **ESP8266/ESP32** enables remote monitoring and alerts, enhancing operational efficiency. The system's low-cost, scalable, and reliable design ensures ease of implementation, making it suitable for small to large-scale applications. With potential extensions like machine learning, mobile app integration, and energy optimization, the system offers significant opportunities for future enhancement. Ultimately, this project improves food safety, air quality, and operational control, ensuring a safer and more efficient working environment for both products and personnel.
