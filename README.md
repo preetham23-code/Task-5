@@ -1,47 +1,101 @@
-Task 5 
-# Advanced Easy to Use Burglar Alarm
+task 5
+2-Bit Comparator using VSDSquadron Mini Board
+Overview
+This project implements a 2-bit comparator using the VSDSquadron Mini Board. The comparator compares two 2-bit binary numbers and determines if one is greater than, less than, or equal to the other. The results are displayed using LEDs.
+Project Objectives
+Design a 2-bit comparator in C programming.
+Implement it on the VSDSquadron Mini Board.
+Verify functionality using LED indicators.
+Gain hands-on experience in digital circuit design and hardware implementation.
+Key Components
+Component	Description
+VSDSquadron Mini Board	Microcontroller for logic implementation
+Breadboard & Jumper Wires	For circuit assembly
+LEDs (3)	Display comparison results
+220Ω Resistors	Current limiting for LEDs
+Pin Configuration
+LED	VSDSquadron Board
+LED1 (Yellow, A > B)	PIN4 (PD4)
+LED2 (Red, A = B)	PIN5 (PD5)
+LED3 (Green, A < B)	PIN6 (PD6)
+Functional Description
+A > B → Yellow LED (LED1) lights up.
+A = B → Red LED (LED2) lights up.
+A < B → Green LED (LED3) lights up.
+Truth Table
+A1	A0	B1	B0	A > B	A = B	A < B
+0	0	0	0	0	1	0
+0	0	0	1	0	0	1
+0	0	1	0	0	0	1
+0	0	1	1	0	0	1
+0	1	0	0	1	0	0
+0	1	0	1	0	1	0
+0	1	1	0	0	0	1
+0	1	1	1	0	0	1
+1	0	0	0	1	0	0
+1	0	0	1	1	0	0
+1	0	1	0	0	1	0
+1	0	1	1	0	0	1
+1	1	0	0	1	0	0
+1	1	0	1	1	0	0
+1	1	1	0	1	0	0
+1	1	1	1	0	1	0
+Code
+#include <ch32v00x.h>
+#include <debug.h>
+#include <stdio.h>
 
-This project implements a burglar alarm using an ultrasonic sensor and a microcontroller board.
+#define LED1_PIN GPIO_Pin_4 // Yellow LED (A > B)
+#define LED2_PIN GPIO_Pin_5 // Red LED (A = B)
+#define LED3_PIN GPIO_Pin_6 // Green LED (A < B)
+#define LED_PORT GPIOD
 
-## Overview
-The Burglar Alarm detects objects using an HC-SR04 ultrasonic sensor, providing an alert via a passive buzzer when intrusion is detected. It operates on low power (5V DC) and is easy to install.
+void GPIO_Config(void) {
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
 
-## Components Required
-- VSD Squadron Mini development board
-- HC-SR04 Ultrasonic Sensor
-- Breadboard
-- Male-to-Male, Male-to-Female jumper cables
-- Red LED
-- Passive Buzzer
-- 220 Ohm Resistor
-- Toggle Switch
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Pin = LED1_PIN | LED2_PIN | LED3_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(LED_PORT, &GPIO_InitStructure);
+}
 
-## Circuit Diagram
-[Insert Circuit Diagram Image or Link Here]
+void compare_2bit(uint8_t a, uint8_t b) {
+    GPIO_ResetBits(LED_PORT, LED1_PIN | LED2_PIN | LED3_PIN);
 
-## Pin Connection Table
-| HC-SR04 Ultrasonic Sensor Pin | VSD Squadron Mini Pin |
-|-------------------------------|-----------------------|
-| VCC                           | 5V                    |
-| Trig                          | PD3                   |
-| Echo                          | PD2                   |
-| Gnd                           | Gnd                   |
-| LED +                         | PD4                   |
-| LED - (via 220Ω Resistor)     | Gnd                   |
-| Buzzer Pin 1                  | PC7                   |
-| Buzzer Pin 2                  | Gnd                   |
-| Button Switch Pin 1           | 5V                    |
-| Button Switch Pin 2           | PC3                   |
+    if (a > b) {
+        GPIO_SetBits(LED_PORT, LED1_PIN); // A > B: Yellow LED
+    } else if (a == b) {
+        GPIO_SetBits(LED_PORT, LED2_PIN); // A == B: Red LED
+    } else {
+        GPIO_SetBits(LED_PORT, LED3_PIN); // A < B: Green LED
+    }
+}
 
-## Installation
-1. Connect components according to the circuit diagram.
-2. Upload the provided code (`main.c`) to your VSD Squadron Mini board.
-3. Power the system using a 5V DC adapter or battery bank.
+int main(void) {
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+    SystemCoreClockUpdate();
+    Delay_Init();
+    GPIO_Config();
 
-## Usage
-1. Turn on the device and wait for auto-adjustment (LED lights up).
-2. Once calibrated, the alarm is ready to detect intrusions.
-3. Press the button to activate monitoring.
-4. Adjust the threshold as needed based on average distance readings.
-
-
+    for (uint8_t a = 0; a <= 3; a++) {
+        for (uint8_t b = 0; b <= 3; b++) {
+            compare_2bit(a, b);
+            Delay_Ms(5000); // Delay for visualization
+        }
+    }
+    
+    return 0;
+}
+How to Use
+Set up the circuit:
+Connect LED1 (Yellow) to PD4, LED2 (Red) to PD5, LED3 (Green) to PD6 via 220Ω resistors.
+Use jumper wires to connect components on a breadboard.
+Flash the code onto the VSDSquadron Mini Board.
+The board will cycle through all 2-bit number combinations, lighting up the respective LED based on the comparison result.
+Expected Output
+If A > B, the Yellow LED (PD4) lights up.
+If A = B, the Red LED (PD5) lights up.
+If A < B, the Green LED (PD6) lights up.
+Conclusion
+This project demonstrates a 2-bit comparator using C programming and hardware implementation on the VSDSquadron Mini Board. It provides hands-on experience in digital logic design, GPIO programming, and embedded systems.
