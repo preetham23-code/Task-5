@@ -1,5 +1,6 @@
-task 5
+Task 5
 2-Bit Comparator using VSDSquadron Mini Board
+
 Overview
 This project implements a 2-bit comparator using the VSDSquadron Mini Board. The comparator compares two 2-bit binary numbers and determines if one is greater than, less than, or equal to the other. The results are displayed using LEDs.
 Project Objectives
